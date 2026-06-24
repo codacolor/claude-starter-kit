@@ -56,6 +56,7 @@ After scaffolding, show the user the tree that was created (a quick `ls` or the 
 - **`/master-prompt`** — builds a personal master prompt so Claude knows who they are and how they work. Strongly recommend they run this next.
 - **`/notebooklm`** — turns PDFs, web pages, YouTube channels, and notes into a NotebookLM notebook they can chat with.
 - **`/hold-my-hand`** — any time a task feels overwhelming, this walks them through it one step at a time.
+- **`/checkpoint`** — before stepping away, this saves where a project stands so the next session picks up seamlessly.
 
 Keep the handoff short and encouraging. They just went from zero to a real workspace.
 

@@ -8,6 +8,7 @@ You get four skills:
 - **`/master-prompt`** — interviews you and builds a personal master prompt so Claude knows who you are and how you work.
 - **`/notebooklm`** — turns PDFs, web pages, YouTube channels, and notes into a Google NotebookLM notebook you can chat with.
 - **`/hold-my-hand`** — walks you through any task one step at a time when things feel overwhelming.
+- **`/checkpoint`** — saves where a project stands so a future session can pick up right where you left off.
 
 ---
 
