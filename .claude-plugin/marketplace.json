@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-starter-kit",
+  "description": "A starter kit for people new to Claude Code. Sets up a clean hub-and-spoke workspace, builds a personal master prompt, manages NotebookLM notebooks, and guides you step by step.",
+  "owner": {
+    "name": "Cody Mitchell"
+  },
+  "plugins": [
+    {
+      "name": "starter-kit",
+      "description": "Get a great Claude Code workspace in one prompt. Scaffolds a hub-and-spoke folder structure with sensible conventions, then bundles skills for building your master prompt, managing NotebookLM, and getting hand-held through any process.",
+      "author": {
+        "name": "Cody Mitchell"
+      },
+      "category": "productivity",
+      "source": "./plugins/starter-kit",
+      "homepage": "https://github.com/codacolor/claude-starter-kit"
+    }
+  ]
+}
