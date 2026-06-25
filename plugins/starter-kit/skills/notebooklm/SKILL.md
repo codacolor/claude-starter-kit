@@ -122,15 +122,13 @@ nlm login --check --profile <profile_name>
 
 If it fails, the most common issue is they used a different Google account than the one with NotebookLM access. Suggest they re-run `nlm login --profile <profile_name>` and pick the right account.
 
-### Step 9 — Pick a base folder
+### Step 9 — Base folder
 
-Tell the user:
+Use `~/Documents/NotebookLM` as the base folder automatically. Do NOT ask — a first-timer has no basis to choose a path, and it just adds friction. (`<base_folder>` is `~/Documents/NotebookLM` for the rest of this skill.)
 
-> Last thing. The skill keeps a small tracking file for each notebook so it knows what's already been added (avoids double-adding the same PDF, etc.). Where do you want those tracking folders to live?
->
-> I suggest `~/Documents/NotebookLM` if you don't have a preference. (The `~` means your home folder.)
+Just let the user know in passing:
 
-Default to `~/Documents/NotebookLM` if they're unsure.
+> I'll keep a small tracking file for each notebook in `~/Documents/NotebookLM` so the skill never double-adds the same source.
 
 ### Step 10 — Save state and finish
 
