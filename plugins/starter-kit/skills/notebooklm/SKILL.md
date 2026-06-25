@@ -12,7 +12,7 @@ One skill that handles every NotebookLM operation. Built on the public `nlm` CLI
 Before handling any user request, check whether the user has completed setup:
 
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/setup.sh state
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/setup.sh state
 ```
 
 If this exits non-zero (no state file found), STOP the requested workflow and run the **First-run setup walkthrough** below first. After setup completes, return to the user's original request.
@@ -43,7 +43,7 @@ Wait for confirmation before proceeding.
 Run:
 
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/setup.sh check
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/setup.sh check
 ```
 
 Read the output. For each line that starts with `missing:`, you'll walk the user through that step. For `ok:` lines, skip ahead.
@@ -92,15 +92,15 @@ brew install yt-dlp
 
 (This one is only needed for YouTube sources, but it's small and quick to install up front.)
 
-### Step 7 — Pick a profile name
+### Step 7 — Profile
 
-Tell the user:
+Use `default` as the profile name automatically. Do NOT ask the user to name it — the question confuses newcomers and the answer is almost always `default` anyway. (Profiles let advanced users save multiple Google accounts; a first-timer never needs more than one.)
 
-> Now we need to sign you into NotebookLM. The `nlm` CLI lets you save multiple Google accounts as separate "profiles" so you can switch between them. For most people, one profile is enough.
->
-> What do you want to call your profile? I suggest `default` if you're not sure.
+Throughout the rest of this skill, `<profile_name>` is `default` unless the user has explicitly set up a different profile before.
 
-Wait for their answer. Most users will say "default" — that's fine.
+Just tell the user what's happening:
+
+> Next I'll sign you into NotebookLM.
 
 ### Step 8 — Sign in
 
@@ -137,7 +137,7 @@ Default to `~/Documents/NotebookLM` if they're unsure.
 Run:
 
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/setup.sh save-state <profile_name> <base_folder>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/setup.sh save-state <profile_name> <base_folder>
 ```
 
 Then tell the user:
@@ -209,7 +209,7 @@ Profile and base folder come from `~/.config/claude-notebooklm/state.json`.
 ### 1. Preflight
 
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/preflight.sh
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/preflight.sh
 ```
 
 Bails with a remediation message if `nlm` or `yt-dlp` isn't installed/authenticated. Surface verbatim and stop.
@@ -226,7 +226,7 @@ Capture the notebook ID from `ID: <uuid>` in the output. Pass it everywhere down
 
 ```bash
 FOLDER="<base_folder>/<name>"
-bash ~/.claude/skills/notebooklm/scripts/scaffold.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/scaffold.sh \
   "$FOLDER" "<name>" "<notebook_id>" "<profile>"
 ```
 
@@ -238,10 +238,10 @@ For each source group (one group per source-type), run the fetcher, then bulk_ad
 
 **YouTube channel:**
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/fetchers/youtube_channel.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/fetchers/youtube_channel.sh \
   "<handle_or_url>" <count> "$FOLDER/<slug>_videos.tsv"
 
-bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/bulk_add.sh \
   "<notebook_id>" "<profile>" "<slug>" \
   "$FOLDER/<slug>_videos.tsv" \
   "$FOLDER/ledger.tsv" "$FOLDER/failures.tsv" youtube
@@ -249,41 +249,41 @@ bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
 
 **Single YouTube videos / generic URLs:**
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/fetchers/url.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/fetchers/url.sh \
   "$FOLDER/urls.tsv" <url1> <url2> ...
 
 # add_mode is `youtube` if all URLs are youtube.com/watch, else `url`
-bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/bulk_add.sh \
   "<notebook_id>" "<profile>" "manual" \
   "$FOLDER/urls.tsv" "$FOLDER/ledger.tsv" "$FOLDER/failures.tsv" url
 ```
 
 **Local files:**
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/fetchers/local_file.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/fetchers/local_file.sh \
   "$FOLDER" "$FOLDER/files.tsv" /path/to/file1.pdf /path/to/file2.txt
 
-bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/bulk_add.sh \
   "<notebook_id>" "<profile>" "files" \
   "$FOLDER/files.tsv" "$FOLDER/ledger.tsv" "$FOLDER/failures.tsv" file
 ```
 
 **Pasted text:**
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/fetchers/text.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/fetchers/text.sh \
   "$FOLDER" "$FOLDER/text.tsv" "<title>" "<content>"
 
-bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/bulk_add.sh \
   "<notebook_id>" "<profile>" "text" \
   "$FOLDER/text.tsv" "$FOLDER/ledger.tsv" "$FOLDER/failures.tsv" text
 ```
 
 **Google Drive docs:**
 ```bash
-bash ~/.claude/skills/notebooklm/scripts/fetchers/gdrive_file.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/fetchers/gdrive_file.sh \
   "$FOLDER/drive.tsv" <url_or_id1> <url_or_id2> ...
 
-bash ~/.claude/skills/notebooklm/scripts/bulk_add.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/bulk_add.sh \
   "<notebook_id>" "<profile>" "drive" \
   "$FOLDER/drive.tsv" "$FOLDER/ledger.tsv" "$FOLDER/failures.tsv" drive
 ```
@@ -307,7 +307,7 @@ Inputs:
 ### 1. Discover (resolves notebook + auto-scaffolds folder if needed)
 
 ```bash
-eval "$(bash ~/.claude/skills/notebooklm/scripts/discover.sh "<name_or_id>")"
+eval "$(bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/discover.sh "<name_or_id>")"
 # sets NOTEBOOK_ID, NOTEBOOK_NAME, NOTEBOOK_FOLDER, IS_FRESH_SCAFFOLD
 ```
 
@@ -322,9 +322,9 @@ Same per-source-type fetcher + bulk_add sequence as the create workflow (step 4 
 ## Workflow: remove
 
 ```bash
-eval "$(bash ~/.claude/skills/notebooklm/scripts/discover.sh "<name>")"
+eval "$(bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/discover.sh "<name>")"
 
-bash ~/.claude/skills/notebooklm/scripts/remove_source.sh \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/remove_source.sh \
   "$NOTEBOOK_ID" "<profile>" "$NOTEBOOK_FOLDER/ledger.tsv" \
   --by-title "<substring>"
 # OR --by-id <source_id> OR --by-canonical <canonical_id>
@@ -343,7 +343,7 @@ nlm notebook list --profile <profile>
 
 For listing sources in one notebook:
 ```bash
-eval "$(bash ~/.claude/skills/notebooklm/scripts/discover.sh "<name>")"
+eval "$(bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/discover.sh "<name>")"
 nlm source list "$NOTEBOOK_ID" --profile <profile>
 ```
 
@@ -355,8 +355,8 @@ column -t -s $'\t' "$NOTEBOOK_FOLDER/ledger.tsv" | head -50
 ## Workflow: rename
 
 ```bash
-eval "$(bash ~/.claude/skills/notebooklm/scripts/discover.sh "<old_name>")"
-bash ~/.claude/skills/notebooklm/scripts/rename_notebook.sh \
+eval "$(bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/discover.sh "<old_name>")"
+bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/rename_notebook.sh \
   "$NOTEBOOK_ID" "<new_title>" "<profile>" "$NOTEBOOK_FOLDER"
 ```
 

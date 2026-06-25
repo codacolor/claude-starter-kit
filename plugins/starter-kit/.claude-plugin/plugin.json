@@ -1,7 +1,7 @@
 {
   "name": "starter-kit",
   "description": "Get a great Claude Code workspace in one prompt. Scaffolds a hub-and-spoke folder structure with sensible conventions, then bundles skills for building your master prompt, managing NotebookLM, and getting hand-held through any process.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "keywords": [
     "onboarding",
     "starter",

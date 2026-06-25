@@ -24,7 +24,7 @@ SKIP_YTDLP="false"
 
 fail() {
   echo "PREFLIGHT FAIL: $*" >&2
-  echo "Run: bash ~/.claude/skills/notebooklm/scripts/setup.sh check" >&2
+  echo "Run: bash ${CLAUDE_PLUGIN_ROOT}/skills/notebooklm/scripts/setup.sh check" >&2
   echo "  to see what's missing and how to fix it." >&2
   exit 1
 }
